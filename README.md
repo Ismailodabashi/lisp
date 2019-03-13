@@ -6,6 +6,8 @@
 - [Задача 8](#Задача-8)
 - [Задача 13](#Задача-13)
 - [Задача 15](#Задача-15)
+- [Задача 25](#Задача-25)
+- [Задача 28](#Задача-28)
 
 # Задача 8
 
@@ -56,5 +58,39 @@
     <img src="https://github.com/Ismailodabashi/lisp/blob/master/Задача%2015.png"  width="220">
     </p>
     
+# Задача 25
+
+Определите функцию, удаляющую из списка каждый четный элемент.
+
+``` LISP
+(defun chet (lst &optional (n nil))
+    (cond ((null (car lst)) (list n))
+          ((/= (rem (car lst) 2) 0) (chet (cdr lst) (cons (car lst) n)))
+          (t (chet (cdr lst) n))
+    )
+ )
+```
+
+<p>
+    <img src="https://github.com/Ismailodabashi/lisp/blob/master/Задача%2025.png"  width="450">
+    </p>  
     
+# Задача 28
+
+Определите функцию, вычисляющую, сколько всего атомов в списке.
+
+``` LISP
+(defun atm (lst &optional (kol 0))
+  (cond ((null lst) kol)
+        ((atom (car lst)) (atm (cdr lst) (+ kol 1)))
+        (t (atm (cdr lst) kol))
+  )
+)
+```
+
+<p>
+    <img src="https://github.com/Ismailodabashi/lisp/blob/master/Задача%2028.png"  width="250">
+    </p>   
+    
+
     
