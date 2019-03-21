@@ -6,6 +6,7 @@
 - [Задача 8](#Задача-8)
 - [Задача 13](#Задача-13)
 - [Задача 15](#Задача-15)
+- [Задача 21](#Задача-21)
 - [Задача 25](#Задача-25)
 - [Задача 28](#Задача-28)
 
@@ -15,11 +16,12 @@
 
 ``` LISP
 (defun task (lst &optional (p nil) (n nil))
-  (cond ((null (car lst)) (list p n))
-        ((> (car lst) 0) (task (cdr lst) (cons (car lst) p) n))
-        ((< (car lst) 0) (task (cdr lst) p (cons (car lst) n)))
-        ((= (car lst) 0) (task (cdr lst) p n))
-  )
+  ((lambda (x) (and(setq first (car x))(setq last (cdr x)))) lst)
+      (cond ((null first) (list p n))
+            ((> first 0) (task last (cons first p) n))
+            ((< first 0) (task last p (cons first n)))
+            ((= first 0) (task last p n))
+      )
 ) 
 ```
 
@@ -33,10 +35,11 @@
 
 ``` LISP
 (defun double (lst &optional (d nil))
-    (cond ((null (car lst)) (list d))
-          ((eq (member (car lst) (cdr lst)) nil) (double (cdr lst) (cons (car lst) d)))
-          (t (double (cdr lst) d))
-    )
+      ((lambda (x) (and(setq first (car x))(setq last (cdr x)))) lst)
+            (cond ((null first) (list d))
+                  ((eq (member first last) nil) (double last (cons first d)))
+                  (t (double last d))
+            )
 )
 ```
 
@@ -58,16 +61,36 @@
     <img src="https://github.com/Ismailodabashi/lisp/blob/master/Задача%2015.png"  width="220">
     </p>
     
+# Задача 21
+
+Определите функцию, удаляющую из списка первое вхождение данного элемента на верхнем уровне.
+
+``` LISP
+(defun udal (lst a)
+    ((lambda (x) (and(setq first (car x))(setq last (cdr x)))) lst)
+        (cond ((null first) lst)
+              ((= first a) last)
+              (t (cons first (udal (cdr lst) a))))
+        )
+
+(print(udal '(2 1 3 2 3 4) 2))
+```
+
+<p>
+    <img src="https://github.com/Ismailodabashi/lisp/blob/master/Задача%2021.png"  width="250">
+    </p>  
+
 # Задача 25
 
 Определите функцию, удаляющую из списка каждый четный элемент.
 
 ``` LISP
 (defun chet (lst &optional (n nil))
-    (cond ((null (car lst)) (list n))
-          ((/= (rem (car lst) 2) 0) (chet (cdr lst) (cons (car lst) n)))
-          (t (chet (cdr lst) n))
-    )
+    ((lambda (x) (and(setq first (car x))(setq last (cdr x)))) lst)
+        (cond ((null first) (list n))
+              ((/= (rem first 2) 0) (chet last (cons first n)))
+              (t (chet last n))
+        )
  )
 ```
 
@@ -81,10 +104,11 @@
 
 ``` LISP
 (defun atm (lst &optional (kol 0))
-  (cond ((null lst) kol)
-        ((atom (car lst)) (atm (cdr lst) (+ kol 1)))
-        (t (atm (cdr lst) kol))
-  )
+    ((lambda (x) (and(setq first (car x))(setq last (cdr x)))) lst)
+      (cond ((null lst) kol)
+            ((atom first) (atm last (+ kol 1)))
+            (t (atm last kol))
+      )
 )
 ```
 
