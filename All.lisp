@@ -3,29 +3,34 @@
 ;чисел на два списка: список положительных чисел и список отрицательных чисел.
 
 (defun task (lst)
-    (if (null (car lst)) () (setq next (task (cdr lst))))
-           ((lambda (x) (and(setq first (car x))(setq last (cdr x)))) lst)
-                (cond   ((null first) (list () ()))
-                        ((< first 0) (cons (car next) (list (cons first (cadr next)))))
-                        ((> first 0) (cons (cons first (car next)) (cdr next)))
-                        ((= first 0) next)
-                )
-             
-           
-    
-        
+           (
+            (lambda (first last)
+               (cond 
+                    ((null lst) nil)
+                    (t 
+                         (
+                            (lambda (next) 
+                                (
+                                     (lambda (pluslst minuslst)
+                                        (cond
+                                            ((< first 0) (list pluslst (cons first minuslst)))
+                                            ((> first 0) (list (cons first pluslst) minuslst))
+                                            ((= first 0) next)       
+                                        )
+                                     )
+                                     (car next)
+                                     (cadr next)
+                                )
+                            )
+                            (task last)
+                        )
+                        )
+                    )
+               )
+            (car lst)
+            (cdr lst)
+            )
 )
-
-
-
-(defun task (lst &optional (p nil) (n nil))
-  ((lambda (x) (and(setq first (car x))(setq last (cdr x)))) lst)
-      (cond ((null first) (list p n))
-            ((> first 0) (task last (cons first p) n))
-            ((< first 0) (task last p (cons first n)))
-            ((= first 0) (task last p n))
-      )
-) 
 
 
 
