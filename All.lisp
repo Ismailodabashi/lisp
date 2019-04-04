@@ -98,9 +98,9 @@
                      (t (cons first (udal last a)))
               )
 						  
-		) (car lst) (cdr lst))
-        
-
+     ) 
+     (car lst) (cdr lst)
+    )
 )
 
 ;(udal '(1 2 3 4 5 3) 3)
@@ -117,9 +117,9 @@
               (cond ((null first) (list n))
                     ((/= (rem first 2) 0) (chet last (cons first n)))
                     (t (chet last n))
-        )
-             
-             ) (car lst)(cdr lst))
+              )
+     )
+     (car lst)(cdr lst))
  )
  
  ;(chet '(9 1 3 2 1 2 2 2 3 2 3 4 1 5 4 6 3))
