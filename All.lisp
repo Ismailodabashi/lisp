@@ -45,16 +45,24 @@
 ;Задача 13
 ;Определите функцию, удаляющие в исходном списке все повторные вхождения элементов.
 
-(defun double (lst &optional (d nil))
-      ((lambda (first last)
-            (cond ((null first) (list d))
-                  ((eq (member first last) nil) (double last (cons first d)))
-                  (t (double last d))
-            )
-               )
-               (car lst) (cdr lst)
-               )
-	
+(defun double (lst)
+    ((lambda (first last)            
+             (cond 
+                    ((null lst) nil)
+                    (t 
+                       (
+                          (lambda (next)
+                                 (cond ((eq (member first next) nil) (cons first next))
+                                       (t next)
+                                 )
+                           )
+                           (double last)
+                       )
+                    )
+              )
+      )
+      (car lst)(cdr lst)
+    )
 )
 
 ;(double '(9 1 3 2 1 2 2 2 3 2 3 4 1 5 4 6 3))
