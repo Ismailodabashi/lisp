@@ -4,7 +4,7 @@
 
 (defun task (lst)
     (if (null lst) nil
-           ((lambda (first last tasklast)
+           ((lambda (first tasklast)
                          ((lambda (poslst neglst)
                                         (cond
                                             ((< first 0) (list poslst (cons first neglst)))
@@ -17,7 +17,6 @@
                           )
              )
             (car lst)
-            (cdr lst)
             (task (cdr lst))
             )
      )
@@ -36,14 +35,15 @@
 ;Задача 13
 ;Определите функцию, удаляющие в исходном списке все повторные вхождения элементов.
 
-(defun deldubl (lst)
+(defun delreps (lst)
     (if (null lst) nil
-        ((lambda (first last funlast)   
+        ((lambda (first funlast)   
                  (cond ((eq (member first funlast) nil) (cons first funlast))
                        (t funlast)
                  )  
           )
-          (car lst)(cdr lst)(deldubl (cdr lst))
+          (car lst)
+	  (delreps (cdr lst))
         )
      )
 )
@@ -76,15 +76,13 @@
 
 (defun del (lst a)
     ((lambda (first last)
-             (if (atom first)
-              	(cond  ((null first) lst)
-                       ((= first a) last)
-                       (t (cons first (del last a)))
-                )
-                 (cons first (del last a))
-              )				  
+                (cond ((null first) lst)
+                      ((or (not (atom first)) (/= first a)) (cons first (del last a)))
+                      (t last)
+                )			  
      ) 
-     (car lst) (cdr lst)
+     (car lst) 
+     (cdr lst)
     )
 )
 
@@ -99,13 +97,12 @@
 
 (defun even (lst)
     (if (null lst) nil
-        ((lambda (first last evlast) 
+        ((lambda (first evlast) 
               (cond ((/= (rem first 2) 0) (cons first evlast))
                     (t evlast)
               )
          )
          (car lst)
-         (cdr lst)
          (even (cdr lst))
         )
     )
@@ -119,28 +116,16 @@
  ;Задача 28
  ;Определите функцию, вычисляющую, сколько всего атомов в списке.
  
-(defun choiceatoms (lst)
-    (if (null lst) nil
-        ((lambda (first last numblast) 
-                 (cond ((null lst) nil)
-                       ((atom first) (cons 1 numblast))
-                       (t (cons 0 numblast))
-                 )
+(defun numbatoms (lst)
+    (if (null lst) 0
+        ((lambda (first numblast) 
+              (cond ((atom first) (+ 1 numblast))
+                    (t (+ 0 numblast))
+              )
          )
-         (car lst) (cdr lst)(choiceatoms (cdr lst))
+         (car lst)(numbatoms (cdr lst))
          ) 
     )
-)
-
-
-(defun sumlist (lst)
-    (if (null lst) 0
-      (+ (car lst) (sumlist (cdr lst)))
-    )
-)
-
-(defun numbatoms (lst)
-    (sumlist (choiceatoms lst))
 )
 
 ;(numbatoms '(1 2 3 4 (5 6)))
@@ -163,15 +148,15 @@
 )
 
 ;(ismany '(1 2 2 3 4 5))
-;FALSE
+;t
 ;(ismany '(4 3 5 2 7 0 1))
-;TRUE
+;nil
 
 ;Задача 45
 ;Напишите функцию (РАССТОЯНИЕ a b), вычисляющую расстояние между городами a b.
 
 
-(defun prop (city xy)
+(defun setcity (city xy)
 	(setf (get city 'x) (car xy))
 	(setf (get city 'y) (cadr xy))
 )
@@ -188,25 +173,32 @@
     )
 )
 
-;(prop 'Simf '(-10 2))
-;(prop 'Bahch '(20 -25))
+;(setcity 'Simf '(-10 2))
+;(setcity 'Bahch '(20 -25))
 ;(dist 'Simf 'Bahch)
 ;40.36087
 
 ;Задача 46
 ;Напишите функцию (РОДИТЕЛИ x) и (СЕСТРЫ_БРАТЬЯ x1 x2).
 
-(defun prop (name dadmom)
+(defun setpar (name dadmom)
     (setf (get name 'dad) (car dadmom))
     (setf (get name 'mom) (cadr dadmom))
 )
 
-(defun get-parents (x)
-    (cons (get x 'dad) (get x 'mom))
+(defun get-parents (name)
+    (cons (get name 'dad) (get name 'mom))
 )
 
-(defun are-they-siblings (x1 x2)
-    (if (or (eq (get x1 'dad) (get x2 'dad)) (eq (get x1 'mom) (get x2 'mom))) t nil)
+(defun are-they-siblings (name1 name2)
+	((lambda (dad1 mom1 dad2 mom2) 
+        (or (eq dad1 dad2) (eq mom1 mom2))
+     )
+     (get name1 'dad)
+     (get name1 'mom)
+     (get name2 'dad)
+     (get name2 'mom)
+    )	 
 )
 
 ;(prop 'Ismail '(Ernes Elzara))
