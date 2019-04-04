@@ -152,42 +152,46 @@
 ;Определить предикат МНОЖЕСТВО, который проверяет, является ли список множеством
 
 
-(defun mnoj (lst)
+(defun ismany (lst)
 	((lambda (first last) 
-              (cond ((null lst) 'True)
-			        ((member first last) 'False)
-			        (t (mnoj last))
+              (cond ((null lst) t)
+			        ((member first last) nil)
+			        (t (ismany last))
 		      )
      ) (car lst)(cdr lst))
 		
 )
 
-;(mnoj '(1 2 2 3 4 5))
+;(ismany '(1 2 2 3 4 5))
 ;FALSE
-;(mnoj '(4 3 5 2 7 0 1))
+;(ismany '(4 3 5 2 7 0 1))
 ;TRUE
 
 ;Задача 45
 ;Напишите функцию (РАССТОЯНИЕ a b), вычисляющую расстояние между городами a b.
 
-(defun prop (city1 city2 xy1 xy2)
-	(setf (get city1 'x) (car xy1))
-	(setf (get city1 'y) (cadr xy1))
-	(setf (get city2 'x) (car xy2))
-	(setf (get city2 'y) (cadr xy2))
-	(dist 'city1 'city2)
+
+(defun prop (city xy)
+	(setf (get city 'x) (car xy))
+	(setf (get city 'y) (cadr xy))
 )
 
 
-(defun dist (a b)
-    ((lambda (x1 y1 x2 y2) (sqrt(+ (* (- x2 x1) (- x2 x1)) (* (- y2 y1) (- y2 y1))))) (get a 'x)(get a 'y)(get b 'x)(get b 'y))
+(defun dist (city1 city2)
+    ((lambda (x1 y1 x2 y2) 
+             (sqrt(+ (* (- x2 x1) (- x2 x1)) (* (- y2 y1) (- y2 y1))))
+     ) 
+     (get city1 'x)
+     (get city1 'y)
+     (get city2 'x)
+     (get city2 'y)
+    )
 )
 
-
-;(prop 'city1 'city2 '(-10 2) '(20 -25))
+;(prop 'Simf '(-10 2))
+;(prop 'Bahch '(20 -25))
+;(dist 'Simf 'Bahch)
 ;40.36087
-;(dist 'city1 'city2 '(2 3) '(3 8))
-;5.0990195 
 
 ;Задача 46
 ;Напишите функцию (РОДИТЕЛИ x) и (СЕСТРЫ_БРАТЬЯ x1 x2).
@@ -196,31 +200,20 @@
     (setf (get name 'dad) (car dadmom))
     (setf (get name 'mom) (cadr dadmom))
 )
- 
-(defun parsisbro (name1 name2 dadmom1 dadmom2)
-    (prop name1 dadmom1)
-    (prop name2 dadmom2)
-    (print (parents name1))
-    (print (parents name2))
-    (sis-bro name1 name2)
-)
 
-(defun parents (x)
+(defun get-parents (x)
     (cons (get x 'dad) (get x 'mom))
 )
 
-(defun sis-bro (x1 x2)
+(defun are-they-siblings (x1 x2)
     (if (or (eq (get x1 'dad) (get x2 'dad)) (eq (get x1 'mom) (get x2 'mom))) t nil)
 )
 
-;(parsisbro 'Enver 'Ismail '(Bekir Elzara) '(Ernes Suvade))
-;(BEKIR . ELZARA) 
-;(ERNES . SUVADE) 
-;NIL
-
-;(parsisbro 'Ernes 'Sadive '(Bekir Suvade) '(Bekir Suvade))
-;(BEKIR . SUVADE) 
-;(BEKIR . SUVADE) 
+;(prop 'Ismail '(Ernes Elzara))
+;(prop 'Enver '(Ernes Elzara))
+;(print (get-parents 'Ismail))
+;(print (get-parents 'Enver))
+;(print (are-they-siblings 'Ismail 'Enver))
 ;T 
 
 
