@@ -74,58 +74,78 @@
 ;Определите функцию, удаляющую из списка первое вхождение данного элемента на верхнем уровне.
 
 
-(defun udal (lst a)
-    ((lambda (first last) 
-              (cond ((null first) lst)
-                     ((= first a) last)
-                     (t (cons first (udal last a)))
-              )
-						  
+(defun del (lst a)
+    ((lambda (first last)
+             (if (atom first)
+              	(cond  ((null first) lst)
+                       ((= first a) last)
+                       (t (cons first (del last a)))
+                )
+                 (cons first (del last a))
+              )				  
      ) 
      (car lst) (cdr lst)
     )
 )
 
-;(udal '(1 2 3 4 5 3) 3)
+;(del '(1 2 3 4 5 3) 3)
 ;(1 2 4 5 3)
-;(udal '(4 2 1 2 3 2) 5)
+;(del '(4 2 1 2 3 2) 5)
 ;(4 2 1 2 3 2)
 
 
 ;Задача 25
 ;Определите функцию, удаляющую из списка каждый четный элемент.
 
-(defun chet (lst &optional (n nil))
-    ((lambda (first last) 
-              (cond ((null first) (list n))
-                    ((/= (rem first 2) 0) (chet last (cons first n)))
-                    (t (chet last n))
+(defun even (lst)
+    (if (null lst) nil
+        ((lambda (first last evlast) 
+              (cond ((/= (rem first 2) 0) (cons first evlast))
+                    (t evlast)
               )
-     )
-     (car lst)(cdr lst))
+         )
+         (car lst)
+         (cdr lst)
+         (even (cdr lst))
+        )
+    )
  )
  
- ;(chet '(9 1 3 2 1 2 2 2 3 2 3 4 1 5 4 6 3))
+ ;(even '(9 1 3 2 1 2 2 2 3 2 3 4 1 5 4 6 3))
  ;(3 5 1 3 3 1 3 1 9)
- ;(chet '(1 2 3 4 5 6 7 8 9))
+ ;(even '(1 2 3 4 5 6 7 8 9))
  ;(9 7 5 3 1)
  
  ;Задача 28
  ;Определите функцию, вычисляющую, сколько всего атомов в списке.
  
-(defun atm (lst &optional (kol 0))
-    ((lambda (first last) 
-             (cond ((null lst) kol)
-                   ((atom first) (atm last (+ kol 1)))
-                   (t (atm last kol))
-             )
-      ) (car lst) (cdr lst))
-      
+(defun choiceatoms (lst)
+    (if (null lst) nil
+        ((lambda (first last numblast) 
+                 (cond ((null lst) nil)
+                       ((atom first) (cons 1 numblast))
+                       (t (cons 0 numblast))
+                 )
+         )
+         (car lst) (cdr lst)(choiceatoms (cdr lst))
+         ) 
+    )
 )
 
-;(atm '(1 2 3 4 (5 6)))
+
+(defun sumlist (lst)
+    (if (null lst) 0
+      (+ (car lst) (sumlist (cdr lst)))
+    )
+)
+
+(defun numbatoms (lst)
+    (sumlist (choiceatoms lst))
+)
+
+;(numbatoms '(1 2 3 4 (5 6)))
 ;4
-;(atm '((1 2 3)(2 3)))
+;(numbatoms '((1 2 3)(2 3)))
 ;0
 
 ;Задача 32
