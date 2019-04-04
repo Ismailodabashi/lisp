@@ -3,33 +3,24 @@
 ;чисел на два списка: список положительных чисел и список отрицательных чисел.
 
 (defun task (lst)
-           (
-            (lambda (first last)
-               (cond 
-                    ((null lst) nil)
-                    (t 
-                         (
-                            (lambda (next) 
-                                (
-                                     (lambda (pluslst minuslst)
+    (if (null lst) nil
+           ((lambda (first last tasklast)
+                         ((lambda (poslst neglst)
                                         (cond
-                                            ((< first 0) (list pluslst (cons first minuslst)))
-                                            ((> first 0) (list (cons first pluslst) minuslst))
-                                            ((= first 0) next)       
+                                            ((< first 0) (list poslst (cons first neglst)))
+                                            ((> first 0) (list (cons first poslst) neglst))
+                                            ((= first 0) tasklast)       
                                         )
-                                     )
-                                     (car next)
-                                     (cadr next)
-                                )
-                            )
-                            (task last)
-                        )
-                        )
-                    )
-               )
+                           )
+                           (car tasklast)
+                           (cadr tasklast)
+                          )
+             )
             (car lst)
             (cdr lst)
+            (task (cdr lst))
             )
+     )
 )
 
 
@@ -45,29 +36,21 @@
 ;Задача 13
 ;Определите функцию, удаляющие в исходном списке все повторные вхождения элементов.
 
-(defun double (lst)
-    ((lambda (first last)            
-             (cond 
-                    ((null lst) nil)
-                    (t 
-                       (
-                          (lambda (next)
-                                 (cond ((eq (member first next) nil) (cons first next))
-                                       (t next)
-                                 )
-                           )
-                           (double last)
-                       )
-                    )
-              )
-      )
-      (car lst)(cdr lst)
-    )
+(defun deldubl (lst)
+    (if (null lst) nil
+        ((lambda (first last funlast)   
+                 (cond ((eq (member first funlast) nil) (cons first funlast))
+                       (t funlast)
+                 )  
+          )
+          (car lst)(cdr lst)(deldubl (cdr lst))
+        )
+     )
 )
 
-;(double '(9 1 3 2 1 2 2 2 3 2 3 4 1 5 4 6 3))
+;(deldubl '(9 1 3 2 1 2 2 2 3 2 3 4 1 5 4 6 3))
 ;(3 6 4 5 1 2 9)
-;(double '(-1 2 2 1 0 0 3 4 -1))
+;(deldubl '(-1 2 2 1 0 0 3 4 -1))
 ;(-1 4 3 0 1 2)
 
 
@@ -75,14 +58,14 @@
 ;Определите функцию, вычисляющую скалярное произведение векторов, заданных списками целых чисел.
 
 
-(defun scpr (x y)
-  (if (or (null x)(null y)) 0 (+ (* (car x) (car y)) (scpr (cdr x) (cdr y))))
+(defun scalar (x y)
+  (if (or (null x)(null y)) 0 (+ (* (car x) (car y)) (scalar (cdr x) (cdr y))))
 )
 
 
-;(scpr '(1 2) '(2 3))
+;(scalar '(1 2) '(2 3))
 ;8
-;(scpr '(0 2) '(9 2))
+;(scalar '(0 2) '(9 2))
 ;4
 
 
