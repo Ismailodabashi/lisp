@@ -26,6 +26,12 @@ main = print $ delEven [1, 2, 3, 4, 5, 6]
 --4. Реализовать на языке Haskell функцию, которая разделяет исходный список из целых чисел на два
 --списка: список положителтных чисел и список отрицательных чисел.
 
+getposneg [] = []
+getposneg lst = ([filter (<0) lst]) ++ ([filter (>0) lst])
+                     
+main = print $ getposneg [-1, 2, -2, 4, 5, 0, 1]
+-- [[-1,-2],[2,4,5,1]]
+
 --5. Реализовать на языке Haskell функцию, заменяющую в исходном списке два подряд идущих одинаковых
 --элемента одним.
 
@@ -61,7 +67,7 @@ main = print $ replace 1 2 [1, 2, 3, 4, 5, 6, 1]
 --8. Реализовать на языке Haskell функцию, которая увеличивает элементы исходного списка на единицу
 
 allplus1 [] = []
-allplus1 (first:mytail) = (first + 1) : (allplus1 mytail)
+allplus1 lst = map (1+) lst
                      
 main = print $ allplus1 [1, 2, 3, 4, 5, 6, 1]
 
@@ -69,17 +75,17 @@ main = print $ allplus1 [1, 2, 3, 4, 5, 6, 1]
 
 --9. Реализовать на языке Haskell функцию, которая увеличивает элементы исходного списка в 10 раз.
 
-allin10 [] = []
-allin10 (first:mytail) = (first * 10) : (allin10 mytail)
+allplus1 [] = []
+allplus1 lst = map (10*) lst
                      
-main = print $ allin10 [1, 2, 3, 4, 5, 6, 1]
+main = print $ allplus1 [1, 2, 3, 4, 5, 6, 1]
 
 -- [10,20,30,40,50,60,10]
 
 --10. Реализовать на языке Haskell функцию, вычисляющую скалярное произведение векторов, заданных списками целых чисел.
 
 getScalar [][] = 0
-getScalar (a:mytail1) (b:mytail2) = (a * b) + (getScalar mytail1 mytail2)
+getScalar x y =  foldr (+) 0 (zipWith (*) x y)
                      
 main = print $ getScalar [1, 2, 3, 4, 5] [1, 3, 4, 5, 2]
 
