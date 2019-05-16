@@ -85,7 +85,7 @@ main = print $ allplus1 [1, 2, 3, 4, 5, 6, 1]
 --10. Реализовать на языке Haskell функцию, вычисляющую скалярное произведение векторов, заданных списками целых чисел.
 
 getScalar [][] = 0
-getScalar x y =  foldr (+) 0 (zipWith (*) x y)
+getScalar x y =  foldl (+) 0 (zipWith (*) x y)
                      
 main = print $ getScalar [1, 2, 3, 4, 5] [1, 3, 4, 5, 2]
 
